@@ -39,16 +39,7 @@
 #include <xf86drmMode.h>
 #include <drm_fourcc.h>
 
-#define debug(fmt, ...) printf("%s:%d: " fmt, __func__, __LINE__, ##__VA_ARGS__)
-#define error(fmt, ...) fprintf(stderr, fmt, ##__VA_ARGS__)
-
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof(*a))
-
-struct platsch_format {
-	uint32_t format;
-	uint32_t bpp;
-	const char *name;
-};
+#include "platsch.h"
 
 static const struct platsch_format platsch_formats[] = {
 	{ DRM_FORMAT_RGB565, 16, "RGB565" }, /* default */
@@ -92,24 +83,6 @@ ssize_t readfull(int fd, void *buf, size_t count)
 
 	return ret;
 }
-
-struct modeset_dev {
-	struct modeset_dev *next;
-
-	uint32_t width;
-	uint32_t height;
-	uint32_t stride;
-	uint32_t size;
-	const struct platsch_format *format;
-	uint32_t handle;
-	void *map;
-
-	bool setmode;
-	drmModeModeInfo mode;
-	uint32_t fb_id;
-	uint32_t conn_id;
-	uint32_t crtc_id;
-};
 
 void draw_buffer(struct modeset_dev *dev, const char *dir, const char *base)
 {
