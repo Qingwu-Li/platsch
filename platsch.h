@@ -33,4 +33,6 @@ struct modeset_dev {
 	uint32_t crtc_id;
 };
 
+ssize_t readfull(int fd, void *buf, size_t count);
+
 #endif /* __PLATSCH_H__ */
