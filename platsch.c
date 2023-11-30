@@ -91,6 +91,11 @@ void draw_buffer(struct modeset_dev *dev, const char *dir, const char *base)
 	ssize_t size;
 	int ret;
 
+	/* Try cairo draw first and fall back in case of failure. */
+	ret = cairo_draw_buffer(dev, dir, base);
+	if (ret == 0)
+		return;
+
 	/*
 	 * make it easy and load a raw file in the right format instead of
 	 * opening an (say) PNG and convert the image data to the right format.

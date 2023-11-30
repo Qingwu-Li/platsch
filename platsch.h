@@ -35,4 +35,13 @@ struct modeset_dev {
 
 ssize_t readfull(int fd, void *buf, size_t count);
 
+#ifdef HAVE_CAIRO
+int cairo_draw_buffer(struct modeset_dev *dev, const char *dir, const char *base);
+#else
+static inline int cairo_draw_buffer(struct modeset_dev *dev, const char *dir, const char *base)
+{
+	return -ENOTSUP;
+}
+#endif /* HAVE_CAIRO */
+
 #endif /* __PLATSCH_H__ */
