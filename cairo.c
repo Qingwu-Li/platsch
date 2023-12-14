@@ -115,7 +115,7 @@ static int png_import_backend_import_picture(cairo_t *cr, const char *filename)
 	surface_width = cairo_image_surface_get_width(surface);
 	surface_height = cairo_image_surface_get_height(surface);
 
-	cairo_scale(cr, surface_width/image_width, surface_height/image_height);
+	cairo_scale(cr, (double) surface_width/image_width, (double) surface_height/image_height);
 	cairo_set_source_surface(cr, image, 0, 0);
 	cairo_paint(cr);
 
