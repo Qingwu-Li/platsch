@@ -218,7 +218,7 @@ static int cairo_import_picture(cairo_t *cr)
  */
 static void cairo_draw_text(cairo_t *cr)
 {
-	unsigned int xpos, ypos;
+	unsigned int xpos, ypos, size;
 	const char *env;
 	char *text;
 	int ret;
@@ -228,17 +228,16 @@ static void cairo_draw_text(cairo_t *cr)
 	if (!env)
 		return;
 
-	ret = sscanf(env, "(%u,%u):%ms", &xpos, &ypos, &text);
+	ret = sscanf(env, "(%u,%u,%u):%ms", &xpos, &ypos, &size, &text);
 	if (ret < 3 || ret == EOF) {
 		error("Error while parsing platsch_overlay_text: %s\n", env);
 		return;
 	}
 
-	debug("text:%s xpos:%u ypos:%u\n", text, xpos, ypos);
+	debug("text:%s xpos:%u ypos:%u size:%u\n", text, xpos, ypos, size);
 	cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
 			       CAIRO_FONT_WEIGHT_NORMAL);
-
-	cairo_set_font_size(cr, 20.0);
+	cairo_set_font_size(cr, (double) size);
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_move_to(cr, xpos, ypos);
 	cairo_show_text(cr, text);
