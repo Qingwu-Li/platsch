@@ -45,7 +45,7 @@ RGB565
 This generates a 1920x1080 splash image in ``RGB565`` format from a png file::
 
   #!/bin/bash
-  magick \
+  convert \
     /path/to/source.png \
     -resize 1920x1080\! \
     -flip \
@@ -62,7 +62,7 @@ This generates a 1920x1080 splash image in ``XRGB8888`` format from a png
 file::
 
   #!/bin/bash
-  magick \
+  convert \
     /path/to/source.png \
     -resize 1920x1080\! \
     -flip \
@@ -149,8 +149,41 @@ To cross-compile the project, use the following commands:
 
 .. code-block:: shell
 
-    meson build --cross-file=<path-to-meson-cross-file>
+    meson setup --cross-file=<path-to-meson-cross-file>
     ninja -C build
+
+Here are sample cross commands：
+
+.. code-block:: shell
+
+    meson setup ./build -DHAVE_CAIRO=true --cross-file ./meson.cross
+    ninja -C build
+
+Here is a sample cross file:
+
+.. code-block:: ini
+
+    [binaries]
+    c = ${CC}
+    cpp = ${CXX}
+    cython = 'cython3'
+    ar = '${AR}'
+    nm = '${NM}'
+    strip = '${STRIP}'
+    readelf = '${READELF}'
+    objcopy = '${OBJCOPY}'
+    pkgconfig = '${pkgconfig}'
+
+    [properties]
+    needs_exe_wrapper = true
+
+
+    [target_machine]
+    system = 'linux'
+    cpu_family = 'aarch64'
+    cpu = 'aarch64'
+    endian = 'little'
+
 
 Build options
 -------------
@@ -168,3 +201,40 @@ The following build options are available:
      - true, false
      - true
      - Enable Cairo support
+   * - SPINNER
+     - true, false
+     - false
+     - Enable spinner
+
+Spinner - Splash Screen with Animation
+======================================
+
+The `spinner` executable is designed to provide boot animations. It supports two types of animations:
+
+1. **Square PNG Rotation Animation**: Rotates a square PNG image.
+2. **Sequence Move Rectangle Animation**: Displays a sequence of square images from a strip of PNG images.
+
+spinner Configuration
+---------------------
+
+The configuration for the `spinner` executable is read from a configuration file,
+with a default path of `/usr/share/platsch/spinner.conf`.
+The directory of the configuration file can be set via the `platsch_directory` environment variable.
+
+Example Configuration File
+--------------------------
+
+Here is an example of a configuration file (`spinner.conf`):
+
+.. code-block:: ini
+
+    backdrop="/usr/share/platsch/splash.png"
+    symbol="/usr/share/platsch/Spinner.png"
+    fps=20
+    # frames=0 means infinite
+    frames=0
+    text="text to display"
+    text_x=350
+    text_y=400
+    text_font="Sans"
+    text_size=30

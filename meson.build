@@ -1,6 +1,13 @@
 project('platsch', 'c')
 
-have_cairo = get_option('HAVE_CAIRO')
+
+# If SPINNER is true, force HAVE_CAIRO to be true
+if get_option('SPINNER')
+    message('SPINNER is enabled, forcing HAVE_CAIRO to be true')
+    have_cairo = true
+else
+    have_cairo = get_option('HAVE_CAIRO')
+endif
 
 # Define dependencies conditionally based on the HAVE_CAIRO option
 platsch_dep = [dependency('libdrm', required: true)]
@@ -33,3 +40,24 @@ executable('platsch',
     install: true,
     include_directories: include_directories('.')
 )
+
+# Create the spinner executable if SPINNER true
+if get_option('SPINNER')
+    spinner_dep = [
+        dependency('cairo', required: true),
+        dependency('libdrm', required: true)
+    ]
+
+    spinner_src = [
+        'spinner.c',
+        'spinner_conf.c'
+    ]
+    executable('spinner',
+        spinner_src,
+        dependencies: spinner_dep,
+        link_with: libplatsch,
+        c_args: args,
+        install: true,
+        include_directories: include_directories('.')
+    )
+endif
