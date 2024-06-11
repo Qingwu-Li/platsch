@@ -79,7 +79,7 @@ static const char *image_format_to_string(cairo_format_t format)
 		return "RGB128F";
 #endif
 	case CAIRO_FORMAT_INVALID:
-	defaul:
+	default:
 		return "invalid";
 	}
 }
@@ -90,7 +90,6 @@ static int png_import_backend_import_picture(cairo_t *cr, const char *filename)
 	cairo_format_t image_fmt, surface_fmt;
 	cairo_surface_t *image, *surface;
 	cairo_status_t status;
-	cairo_format_t format;
 	int ret = 0;
 
 	image = cairo_image_surface_create_from_png(filename);
@@ -253,6 +252,7 @@ static uint32_t convert_to_cairo_format(uint32_t format)
 	case DRM_FORMAT_XRGB8888:
 		return CAIRO_FORMAT_ARGB32;
 	}
+	return CAIRO_FORMAT_INVALID;
 }
 
 static cairo_t *cairo_init(struct modeset_dev *dev, const char *dir, const char *base)

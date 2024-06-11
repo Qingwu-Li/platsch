@@ -141,3 +141,30 @@ By adding a Signed-off-by line (e.g. using ``git commit -s``) saying::
 
 (using your real name and e-mail address), you state that your contributions
 are in line with the DCO.
+
+Cross compiling instructions
+----------------------------
+
+To cross-compile the project, use the following commands:
+
+.. code-block:: shell
+
+    meson build --cross-file=<path-to-meson-cross-file>
+    ninja -C build
+
+Build options
+-------------
+
+The following build options are available:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Option name
+     - Values
+     - Default
+     - Notes
+   * - HAVE_CAIRO
+     - true, false
+     - true
+     - Enable Cairo support
