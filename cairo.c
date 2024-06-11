@@ -25,7 +25,7 @@
 #include <drm_fourcc.h>
 #include <cairo.h>
 
-#include "platsch.h"
+#include "libplatsch.h"
 
 static struct cairo_ctx {
 	struct modeset_dev *dev;
@@ -255,7 +255,7 @@ static uint32_t convert_to_cairo_format(uint32_t format)
 	return CAIRO_FORMAT_INVALID;
 }
 
-static cairo_t *cairo_init(struct modeset_dev *dev, const char *dir, const char *base)
+cairo_t *cairo_init(struct modeset_dev *dev, const char *dir, const char *base)
 {
 	cairo_surface_t *surface;
 	cairo_status_t status;

@@ -1,11 +1,11 @@
 project('platsch', 'c')
 
+have_cairo = get_option('HAVE_CAIRO')
+
 # Define dependencies conditionally based on the HAVE_CAIRO option
 platsch_dep = [dependency('libdrm', required: true)]
-sources = ['platsch.c']
+sources = ['libplatsch.c']
 args = []
-
-have_cairo = get_option('HAVE_CAIRO')
 
 if have_cairo
     platsch_dep += dependency('cairo', required: true)
@@ -13,14 +13,23 @@ if have_cairo
     args += ['-DHAVE_CAIRO']
 endif
 
-# Define the headers
-headers = ['platsch.h']
-
-# Create the platsch executable
-executable('platsch',
+# Create a static library from libplatsch.c and optionally cairo.c
+libplatsch = static_library('libplatsch',
     sources,
     dependencies: platsch_dep,
     c_args: args,
+    install: true
+)
+
+# Define the headers
+headers = ['libplatsch.h', 'platsch.h']
+
+# Create the platsch executable, linking it statically with libplatsch
+executable('platsch',
+    'platsch.c',
+    dependencies: platsch_dep,
+    c_args: args,
+    link_with: libplatsch,
     install: true,
     include_directories: include_directories('.')
 )
