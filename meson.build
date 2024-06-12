@@ -4,8 +4,18 @@ dep_libdrm = dependency('libdrm',
     version: '>= 2.4.112'
 )
 
+libplasch_sources = ['libplatsch.c']
+
+libplatsch = static_library('platsch',
+    libplasch_sources,
+    dependencies: dep_libdrm
+)
+
+platsch_sources = ['platsch.c']
+
 executable('platsch',
-    'platsch.c',
+    platsch_sources,
+    link_with: libplatsch,
     dependencies: dep_libdrm,
     install: true,
     install_dir: 'sbin'
