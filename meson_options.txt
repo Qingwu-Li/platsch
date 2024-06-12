@@ -1,0 +1,1 @@
+option('SPINNER', type: 'boolean', value: false, description: 'Enable spinner build')
