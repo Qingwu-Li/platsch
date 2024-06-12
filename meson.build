@@ -20,3 +20,23 @@ executable('platsch',
     install: true,
     install_dir: 'sbin'
 )
+
+if get_option('spinner')
+    spinner_dep = [
+        dependency('cairo', version: '>= 1.0'),
+        dep_libdrm
+    ]
+
+    spinner_src = [
+        'spinner.c',
+        'spinner_conf.c'
+    ]
+
+    executable('spinner',
+        spinner_src,
+        dependencies: spinner_dep,
+        link_with: libplatsch,
+        install: true,
+        install_dir:'sbin'
+    )
+endif
