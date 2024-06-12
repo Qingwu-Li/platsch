@@ -141,3 +141,13 @@ By adding a Signed-off-by line (e.g. using ``git commit -s``) saying::
 
 (using your real name and e-mail address), you state that your contributions
 are in line with the DCO.
+
+Cross compiling instructions
+----------------------------
+
+To cross compile the project, use the following commands:
+
+.. code-block:: shell
+
+    meson setup build
+    meson compile -C build
