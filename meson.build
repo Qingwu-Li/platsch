@@ -5,8 +5,18 @@ dep_libdrm = dependency('libdrm',
     static: true
 )
 
+libplasch_sources = ['libplatsch.c']
+
+libplatsch = static_library('platsch',
+    libplasch_sources,
+    dependencies: dep_libdrm
+)
+
+platsch_sources = ['platsch.c']
+
 executable('platsch',
-    'platsch.c',
+    platsch_sources,
+    link_with: libplatsch,
     dependencies: dep_libdrm,
     link_args: '-static',
     install: true,
