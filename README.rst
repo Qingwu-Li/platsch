@@ -149,3 +149,40 @@ Compiling Instructions
 
     meson setup build
     meson compile -C build
+
+
+Spinner - Splash Screen with Animation
+======================================
+
+The `spinner` executable is designed to provide boot animations. It supports two types of animations:
+
+1. **static PNG and text support**: Show a static png image and text.
+1. **Square PNG Rotation Animation**: Rotates a square PNG image.
+2. **Sequence Move Rectangle Animation**: Displays a sequence of square images from a strip of PNG images.
+
+spinner Configuration
+---------------------
+
+The configuration for the `spinner` executable is read from a configuration file,
+with a default path of `/usr/share/platsch/spinner.conf`.
+The directory of the configuration file can be set via the `platsch_directory` environment variable.
+
+
+spinner Configuration
+---------------------
+
+Here is a sample  of a configuration file (`spinner.conf`):
+
+.. code-block:: ini
+
+    symbol="/usr/share/platsch/Spinner.png"
+    fps=20
+    text=""
+    text_x=350
+    text_y=400
+    text_font="Sans"
+    text_size=30
+
+Set text to empty if you don't want to display any text.
+Set the symbol to empty if you don't want to display any animation.
+The background image is indicated by ``--directory`` and ``--basename``.
