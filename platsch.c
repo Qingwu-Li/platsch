@@ -119,17 +119,18 @@ int main(int argc, char *argv[])
 
 	platsch_drmDropMaster();
 
+	ret = fork();
+	if (ret < 0) {
+		platsch_error("failed to fork for init: %m\n");
+	} else if (ret == 0) {
+		/*
+		* in the child go to sleep to keep the drm device open
+		* and give pid 1 to init.
+		*/
+		goto sleep;
+	}
+
 	if (pid1) {
-		ret = fork();
-		if (ret < 0) {
-			platsch_error("failed to fork for init: %m\n");
-		} else if (ret == 0) {
-			/*
-			 * in the child go to sleep to keep the drm device open
-			 * and give pid 1 to init.
-			 */
-			goto sleep;
-		}
 
 		initsargv = calloc(sizeof(argv[0]), argc + 1);
 		if (!initsargv) {
@@ -146,6 +147,8 @@ int main(int argc, char *argv[])
 
 		return EXIT_FAILURE;
 	}
+
+	return EXIT_SUCCESS;
 
 sleep:
 	platsch_redirect_stdfd();
